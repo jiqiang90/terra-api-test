@@ -47,8 +47,13 @@ async function getTxInfobyHashes(
     for (const hash of txHashes){
         const hex = hashToHex(hash)
         console.log(`- fetch transaction : ${hex}`)
-        const info = await api.tx.txInfo(hex)
-        TxInfo.push(info);
+        try{
+            const info = await api.tx.txInfo(hex)
+            TxInfo.push(info);
+        }catch (e) {
+            console.log(`!!! failed to fetch transaction ${hex}`);
+            throw e;
+        }
     }
     return TxInfo;
 }
